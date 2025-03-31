@@ -11,6 +11,7 @@ dotenv.config();
 // Create Express application
 const app = express();
 const PORT = process.env.PORT || 3000;
+const isProduction = process.env.NODE_ENV === 'production';
 
 // Get API key from environment variables
 const WEATHER_API_KEY = process.env.OPENWEATHERMAP_API_KEY;
@@ -20,10 +21,18 @@ const WEATHER_API_BASE_URL = 'https://api.openweathermap.org/data/2.5';
 app.use(express.json());  // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true }));  // Parse URL-encoded request bodies
 
-// CORS Configuration
-// This prevents "Same-Origin Policy" errors when your frontend tries to call your backend
+// Add compression for faster loading in production
+if (isProduction) {
+  const compression = require('compression');
+  app.use(compression());
+}
+
+// CORS Configuration with production-specific settings
 app.use(cors({
-  origin: '*',  // In production, you should specify your frontend domain
+  origin: isProduction ? [
+    'https://your-app-name.onrender.com', 
+    'https://your-custom-domain.com'  // If you have a custom domain
+  ] : '*',
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -120,6 +129,9 @@ app.listen(PORT, () => {
   console.log(`Weather Dashboard server running on port ${PORT}`);
   console.log(`Access the API at http://localhost:${PORT}/api/health`);
   console.log(`Access the frontend at http://localhost:${PORT}`);
+  
+  // Environment information
+  console.log(`Environment: ${isProduction ? 'Production' : 'Development'}`);
   
   // Ladybug fact
   console.log('\nFun Fact: Ladybugs can eat up to 5,000 aphids in their lifetime, making them excellent natural pest controllers for gardeners!');
