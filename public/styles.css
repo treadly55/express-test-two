@@ -1,0 +1,55 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.search-container {
+    margin: 20px 0;
+}
+
+input, button {
+    padding: 8px;
+}
+
+.weather-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.forecast-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.forecast-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    flex: 1 0 calc(20% - 10px);
+    min-width: 120px;
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+}
+
+/* Basic responsiveness */
+@media (max-width: 600px) {
+    .forecast-item {
+        flex: 1 0 calc(50% - 10px);
+    }
+}
